@@ -4,9 +4,15 @@ from datetime import datetime
 import sqlite3
 import random
 
+# supporting functions
+def newWindow(title): # supporting function to open a new window with an title
+   global window
+   window = tk.Toplevel()
+   window.title(title)
 
-# connect to a database
-def setupDatabase(): # setup initial database with existing prompts
+# main functions
+
+def setupDatabase(): # connect to a(n) and setup initial database with existing prompts
   conn = sqlite3.connect("journal.db")
   cursor = conn.cursor()
 
@@ -53,22 +59,16 @@ def setupDatabase(): # setup initial database with existing prompts
 
   
 def addPrompt(): # user function to add new prompts into database
-  def save(): # saves the entry, incomplete
-    text = text_area.get("1.0", tk.END).strip()
-    if not text:
-        messagebox.showwarning("Empty Entry", "Please write something before saving.")
-        return
-  
-  entry_window = tk.Toplevel() # creates a seperate window to enter new prompts
-
-  tk.Button(entry_window, text="Save Entry", command=save, width=15).pack(pady=10) # save button
-  text_area = scrolledtext.ScrolledText(entry_window, wrap=tk.WORD, width=40, height=15)
-  text_area.pack(pady=10)
+  newWindow("Entry Window")
+  tk.Label(window, text="Enter a new prompt in the terminal").pack(pady=30)
+  # text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=40, height=15).pack(pady=10)
 
   conn = sqlite3.connect("journal.db")
   cursor = conn.cursor()
-  
-  add_prompt = input("Add in a prompt: ")
+
+  global text
+  add_prompt = input("\n \n Add in a new prompt: ")
+  print("new prompt added!")
   
   cursor.execute('INSERT INTO prompts (text) VALUES (?)', (add_prompt,))
   conn.commit()
@@ -76,19 +76,35 @@ def addPrompt(): # user function to add new prompts into database
   cursor.close()
   conn.close()
 
-def getRandomPrompt():
+def getNewPromt(): # supporting function for gerRandomprompt()
   conn = sqlite3.connect('journal.db')
   cursor = conn.cursor()
 
   cursor.execute('SELECT id, text FROM prompts ORDER BY RANDOM() LIMIT 1')
   result = cursor.fetchone()
-  print(result)
+
+  prompt = tk.Label(window, text=result).pack(pady=10)
+
+
+def getRandomPrompt():
+  newWindow("Random prompt")
+  conn = sqlite3.connect('journal.db')
+  cursor = conn.cursor()
+
+  cursor.execute('SELECT id, text FROM prompts ORDER BY RANDOM() LIMIT 1')
+  result = cursor.fetchone()
+  gen_prompts = tk.Button(window, text="New Quote", command=getNewPromt, width = 20).pack(pady=10)
+  prompt = tk.Label(window, text=result).pack(pady=10)
   conn.close()
-  return result
+
 
 def getRandomQuote():
    print("hi") # place holder
 
+
+
+
+# setup Tkinter starting window
 root = tk.Tk()
 root.title("Journal App")
 root.geometry("400x300")
@@ -100,4 +116,6 @@ tk.Label(root, text=f"Today's Date: {today}", font=("Arial", 14)).pack(pady=10)
 # Buttons
 gen_prompts = tk.Button(root, text="Generate Prompt", command=getRandomPrompt, width=20).pack(pady=10)
 add_prompts = tk.Button(root, text="Add Prompt", command=addPrompt, width=20).pack(pady=10)
+get_quote = tk.Button(root, text="Quote of the Day", command=getRandomQuote, width=20).pack(pady=10)
+
 root.mainloop()
