@@ -76,26 +76,22 @@ def addPrompt(): # user function to add new prompts into database
   cursor.close()
   conn.close()
 
-def getNewPromt(): # supporting function for gerRandomprompt()
-  conn = sqlite3.connect('journal.db')
-  cursor = conn.cursor()
-
-  cursor.execute('SELECT id, text FROM prompts ORDER BY RANDOM() LIMIT 1')
-  result = cursor.fetchone()
-
-  prompt = tk.Label(window, text=result).pack(pady=10)
-
-
 def getRandomPrompt():
   newWindow("Random prompt")
-  conn = sqlite3.connect('journal.db')
-  cursor = conn.cursor()
+  def getNewPompt():
+    conn = sqlite3.connect('journal.db')
+    cursor = conn.cursor()
 
-  cursor.execute('SELECT id, text FROM prompts ORDER BY RANDOM() LIMIT 1')
-  result = cursor.fetchone()
-  gen_prompts = tk.Button(window, text="New Quote", command=getNewPromt, width = 20).pack(pady=10)
-  prompt = tk.Label(window, text=result).pack(pady=10)
-  conn.close()
+    cursor.execute('SELECT id, text FROM prompts ORDER BY RANDOM() LIMIT 1')
+    result = cursor.fetchone()
+    conn.close()
+    if result:  # Ensure there's a valid result
+      prompt_label.config(text=result[1]) # result[1] contains the new prompt, but without the added number in the front (from the database)
+
+  gen_prompts = tk.Button(window, text="New prompt", command=getNewPompt, width = 20).pack(pady=10)
+  prompt_label = tk.Label(window, text="", anchor="w")
+
+  prompt_label.pack(pady=10)
 
 
 def getRandomQuote():
