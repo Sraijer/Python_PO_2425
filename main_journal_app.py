@@ -1,12 +1,12 @@
 import tkinter as tk
-from tkinter import messagebox, scrolledtext
+from tkinter import scrolledtext, PhotoImage
 from datetime import datetime
 import sqlite3
 import random
 
 # supporting functions
 def newWindow(title): # supporting function to open a new window with an title
-   global window
+   global window # Is needed for the addPrompt() function
    window = tk.Toplevel()
    window.title(title)
 
@@ -58,23 +58,51 @@ def setupDatabase(): # connect to a(n) and setup initial database with existing 
   return prompts_li
 
   
-def addPrompt(): # user function to add new prompts into database
+# def addPrompt(): # user function to add new prompts into database
+#   newWindow("Entry Window")
+#   tk.Label(window, text="Enter a new prompt in the terminal").pack(pady=30)
+#   # text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=40, height=15).pack(pady=10)
+
+#   conn = sqlite3.connect("journal.db")
+#   cursor = conn.cursor()
+
+#   global text
+#   add_prompt = input("\n \n Add in a new prompt: ")
+#   print("new prompt added!")
+  
+#   cursor.execute('INSERT INTO prompts (text) VALUES (?)', (add_prompt,))
+#   conn.commit()
+  
+#   cursor.close()
+#   conn.close()
+def addPrompt():
+  global window
   newWindow("Entry Window")
-  tk.Label(window, text="Enter a new prompt in the terminal").pack(pady=30)
-  # text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=40, height=15).pack(pady=10)
 
-  conn = sqlite3.connect("journal.db")
-  cursor = conn.cursor()
+  tk.Label(window, text="Enter a new prompt: ")
+  text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=40, height=10)
+  text_area.pack(pady=10)
 
-  global text
-  add_prompt = input("\n \n Add in a new prompt: ")
-  print("new prompt added!")
+  def Publish():
+    add_prompt = text_area.get("1.0", tk.END).strip()  # Tekst ophalen uit tekstvak
+    if add_prompt:
+      # Make a connection to the DB
+      conn = sqlite3.connect("journal.db")
+      cursor = conn.cursor()
+      cursor.execute('INSERT INTO prompts (text) VALUES (?)', (add_prompt,))
+      conn.commit()
+      cursor.close()
+      conn.close()
+
+      # Print and add label that the prompt was published to the DB
+      print("Prompt was added!")
+      completed = tk.Label(window, text="Prompt was added!\n Add new text to publish a new prompt to the DataBase!")
+      completed.pack(pady=10)
   
-  cursor.execute('INSERT INTO prompts (text) VALUES (?)', (add_prompt,))
-  conn.commit()
-  
-  cursor.close()
-  conn.close()
+  publish_button = tk.Button(window, text="Publish", command=Publish, width=20).pack(pady=10)
+
+
+
 
 def getRandomPrompt():
   newWindow("Random prompt")
@@ -103,7 +131,8 @@ def getRandomQuote():
 # setup Tkinter starting window
 root = tk.Tk()
 root.title("Journal App")
-root.geometry("400x300")
+root.geometry("600x250")
+
 
 # Current date
 today = datetime.now().strftime('%d-%m-%Y')
