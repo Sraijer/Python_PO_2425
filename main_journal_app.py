@@ -1,10 +1,13 @@
 import tkinter as tk
-from tkinter import scrolledtext, PhotoImage
+from tkinter import scrolledtext
 from datetime import datetime
+import time
 import sqlite3
 import random
 
+
 # supporting functions
+
 def newWindow(title): # supporting function to open a new window with an title
    global window # Is needed for the addPrompt() function
    window = tk.Toplevel()
@@ -57,24 +60,7 @@ def setupDatabase(): # connect to a(n) and setup initial database with existing 
   conn.close()
   return prompts_li
 
-  
-# def addPrompt(): # user function to add new prompts into database
-#   newWindow("Entry Window")
-#   tk.Label(window, text="Enter a new prompt in the terminal").pack(pady=30)
-#   # text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=40, height=15).pack(pady=10)
 
-#   conn = sqlite3.connect("journal.db")
-#   cursor = conn.cursor()
-
-#   global text
-#   add_prompt = input("\n \n Add in a new prompt: ")
-#   print("new prompt added!")
-  
-#   cursor.execute('INSERT INTO prompts (text) VALUES (?)', (add_prompt,))
-#   conn.commit()
-  
-#   cursor.close()
-#   conn.close()
 def addPrompt():
   global window
   newWindow("Entry Window")
@@ -101,9 +87,6 @@ def addPrompt():
   
   publish_button = tk.Button(window, text="Publish", command=Publish, width=20).pack(pady=10)
 
-
-
-
 def getRandomPrompt():
   newWindow("Random prompt")
   def getNewPompt():
@@ -122,17 +105,10 @@ def getRandomPrompt():
   prompt_label.pack(pady=10)
 
 
-def getRandomQuote():
-   print("hi") # place holder
-
-
-
-
 # setup Tkinter starting window
 root = tk.Tk()
 root.title("Journal App")
 root.geometry("600x250")
-
 
 # Current date
 today = datetime.now().strftime('%d-%m-%Y')
@@ -141,6 +117,5 @@ tk.Label(root, text=f"Today's Date: {today}", font=("Arial", 14)).pack(pady=10)
 # Buttons
 gen_prompts = tk.Button(root, text="Generate Prompt", command=getRandomPrompt, width=20).pack(pady=10)
 add_prompts = tk.Button(root, text="Add Prompt", command=addPrompt, width=20).pack(pady=10)
-get_quote = tk.Button(root, text="Quote of the Day", command=getRandomQuote, width=20).pack(pady=10)
 
 root.mainloop()
