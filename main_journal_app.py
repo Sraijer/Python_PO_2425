@@ -4,6 +4,7 @@ from datetime import datetime
 from time import sleep
 import sqlite3
 import random
+import webbrowser
 # supporting functions
 
 def newWindow(title): # supporting function to open a new window with an title
@@ -12,23 +13,18 @@ def newWindow(title): # supporting function to open a new window with an title
    window.title(title)
 
 def closingUp(): # closing up button
-  message = tk.messagebox.askquestion("Closing window...",  "Do you wish to close the app?") # gives a pop up with a Yes/No question
+  message = tk.messagebox.askyesno("Closing window...",  "Do you wish to close the app?") # gives a pop up with a Yes/No question
   
   if message == True: # if Yes is pressed
     print("Closing in...")
     closing_time = 5
-
-    messages = [
-      "Saving prompts...",
-      "Saving changes...",
-      "Closing connection...",
-    ]
-
-    while closing_time >=0:
-      print(closing_time, random.choice(messages)) ; sleep(0.5)
+    while closing_time >= 0:
+      print(closing_time) ; sleep(0.5)
       closing_time -= 1
-    if closing_time <= 1:
+    if closing_time <= 0:
       root.destroy()
+  else:
+    print("Application not closed")
 
 # main functions
 
@@ -121,11 +117,15 @@ def getRandomPrompt():
 
   prompt_label.pack(pady=10)
 
+# incomplete/needs testing
+def userGuide():
+  webbrowser.open("file:///Users/s.raijer/Desktop/Python_PO_24:25/index.html", new=2) # VERY IMPORTANT!! STILL NEEDS TO BE CHECKED IF IT WORKS ON ANOTHER LAPTOP!!
+
 
 # setup Tkinter starting window
 root = tk.Tk()
 root.title("Journal App")
-root.geometry("600x250")
+root.geometry("600x350")
 
 # Current date
 today = datetime.now().strftime('%d-%m-%Y')
@@ -134,6 +134,7 @@ tk.Label(root, text=f"Today's Date: {today}", font=("Arial", 14)).pack(pady=10)
 # Buttons
 gen_prompts = tk.Button(root, text="Generate Prompt", command=getRandomPrompt, width=20).pack(pady=10)
 add_prompts = tk.Button(root, text="Add Prompt", command=addPrompt, width=20).pack(pady=10)
+user_guide = tk.Button(root, text="Userguide", command=userGuide, width=20).pack(pady=10)
 close_window = tk.Button(root, text="Close window", command=closingUp, width=20).pack(pady=20)
 
 root.mainloop()
