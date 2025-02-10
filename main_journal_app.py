@@ -1,11 +1,9 @@
 import tkinter as tk
-from tkinter import scrolledtext
+from tkinter import scrolledtext, messagebox
 from datetime import datetime
-import time
+from time import sleep
 import sqlite3
 import random
-
-
 # supporting functions
 
 def newWindow(title): # supporting function to open a new window with an title
@@ -13,9 +11,28 @@ def newWindow(title): # supporting function to open a new window with an title
    window = tk.Toplevel()
    window.title(title)
 
+def closingUp(): # closing up button
+  message = tk.messagebox.askquestion("Closing window...",  "Do you wish to close the app?") # gives a pop up with a Yes/No question
+  
+  if message == True: # if Yes is pressed
+    print("Closing in...")
+    closing_time = 5
+
+    messages = [
+      "Saving prompts...",
+      "Saving changes...",
+      "Closing connection...",
+    ]
+
+    while closing_time >=0:
+      print(closing_time, random.choice(messages)) ; sleep(0.5)
+      closing_time -= 1
+    if closing_time <= 1:
+      root.destroy()
+
 # main functions
 
-def setupDatabase(): # connect to a(n) and setup initial database with existing prompts
+def setupDatabase(): # connect to and setup an initial database with existing prompts
   conn = sqlite3.connect("journal.db")
   cursor = conn.cursor()
 
@@ -26,7 +43,7 @@ def setupDatabase(): # connect to a(n) and setup initial database with existing 
 
   cursor.execute('SELECT COUNT(*) FROM prompts')
   if cursor.fetchone()[0] == 0:
-      prompts_li = [                              # list of prompts
+      prompts_li = [                              # list of innitial prompts
       "What is a quote that means a lot to you?",
       "What quote do you live by and why?",
       "What is a place you love to frequent?",
@@ -70,7 +87,7 @@ def addPrompt():
   text_area.pack(pady=10)
 
   def Publish():
-    add_prompt = text_area.get("1.0", tk.END).strip()  # Tekst ophalen uit tekstvak
+    add_prompt = text_area.get("1.0", tk.END).strip()  # "stripping" the text from an area
     if add_prompt:
       # Make a connection to the DB
       conn = sqlite3.connect("journal.db")
@@ -93,7 +110,7 @@ def getRandomPrompt():
     conn = sqlite3.connect('journal.db')
     cursor = conn.cursor()
 
-    cursor.execute('SELECT id, text FROM prompts ORDER BY RANDOM() LIMIT 1')
+    cursor.execute('SELECT id, text FROM prompts ORDER BY RANDOM() LIMIT 1') # get a random prompt from the DB
     result = cursor.fetchone()
     conn.close()
     if result:  # Ensure there's a valid result
@@ -117,5 +134,6 @@ tk.Label(root, text=f"Today's Date: {today}", font=("Arial", 14)).pack(pady=10)
 # Buttons
 gen_prompts = tk.Button(root, text="Generate Prompt", command=getRandomPrompt, width=20).pack(pady=10)
 add_prompts = tk.Button(root, text="Add Prompt", command=addPrompt, width=20).pack(pady=10)
+close_window = tk.Button(root, text="Close window", command=closingUp, width=20).pack(pady=20)
 
 root.mainloop()
