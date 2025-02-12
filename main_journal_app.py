@@ -123,7 +123,7 @@ def getRandomPrompt():
 
 # incomplete/needs testing
 def userGuide():
-  webbrowser.open("file:///Users/s.raijer/Desktop/Python_PO_24:25/index.html", new=2) # VERY IMPORTANT!! STILL NEEDS TO BE CHECKED IF IT WORKS ON ANOTHER LAPTOP!!
+  webbrowser.open("index.html", new=2) # VERY IMPORTANT!! STILL NEEDS TO BE CHECKED IF IT WORKS ON ANOTHER LAPTOP!!
 
 
 # setup Tkinter starting window
