@@ -1,3 +1,5 @@
+'''Make sure all the libraries are installed on your device. See the README on how to install PILLOW'''
+
 import tkinter as tk
 from tkinter import scrolledtext, messagebox
 from datetime import datetime
@@ -5,6 +7,8 @@ from time import sleep
 import sqlite3
 import random
 import webbrowser
+import PIL
+from PIL import ImageTk, Image
 # supporting functions
 
 def newWindow(title): # supporting function to open a new window with an title
@@ -76,7 +80,7 @@ def setupDatabase(): # connect to and setup an initial database with existing pr
 
 def addPrompt():
   global window
-  newWindow("Entry Window")
+  newWindow("Entry window")
 
   tk.Label(window, text="Enter a new prompt: ")
   text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=40, height=10)
@@ -126,6 +130,16 @@ def userGuide():
 root = tk.Tk()
 root.title("Journal App")
 root.geometry("600x350")
+root.configure
+
+# Open and resize the image
+image = Image.open('carpe-diem.jpg')
+resized_image = image.resize((155, 233))  # resize the image
+
+photo = ImageTk.PhotoImage(resized_image) # Convert the resized image to a format Tkinter can use
+label = tk.Label(root, image=photo) # create a label that contains the image
+label.image = photo  # Keep a reference in case
+label.pack(side="left", padx=10, pady=10)
 
 # Current date
 today = datetime.now().strftime('%d-%m-%Y')

@@ -1,6 +1,11 @@
 # python_games
 Schoolproject V5. Gemaakt door Sonja Raijer
 
+voor deze applicatie moet je de PILLOW (PIL) library downloaden, hiervoor kun je de volgende code gebruikten in je terminal:
+pip install pillow
+
+If you are using Thonny, make sure that the library is added to Thonny aswell.
+
  Evaluatie:
  - Wat heb ik gedaan?
  Ik heb een python-applicatie met een General-User-Interface gemaakt.
@@ -11,5 +16,6 @@ Schoolproject V5. Gemaakt door Sonja Raijer
 
 Bij de getPrompt had ik een     ^^^^^^^^^^^^^^^^^^^
 AttributeError: 'NoneType' object has no attribute 'config'
-error. Om dit op te lossen heb ik ChatGPT gebruikt. Deze raadde me aan om de volgorde van code te veranderen.
+error.
+Om dit op te lossen heb ik ChatGPT gebruikt. Deze raadde me aan om de volgorde van code te veranderen.
 
