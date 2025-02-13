@@ -7,6 +7,7 @@ from time import sleep
 import sqlite3
 import random
 import webbrowser
+import os
 import PIL
 from PIL import ImageTk, Image
 # supporting functions
@@ -123,7 +124,8 @@ def getRandomPrompt():
 
 # incomplete/needs testing
 def userGuide():
-  webbrowser.open("index.html", new=2) # VERY IMPORTANT!! STILL NEEDS TO BE CHECKED IF IT WORKS ON ANOTHER LAPTOP!!
+  index_path = os.path.join(os.path.dirname(__file__), "index.html")
+  webbrowser.open(f"file://{os.path.abspath(index_path)}", new=2) # VERY IMPORTANT!! STILL NEEDS TO BE CHECKED IF IT WORKS ON ANOTHER LAPTOP!!
 
 
 # setup Tkinter starting window
