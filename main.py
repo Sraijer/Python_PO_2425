@@ -33,6 +33,8 @@ def closingUp(): # closing up button
 
 # main functions
 
+
+'''source: how to set up a database (youtube video)'''
 def setupDatabase(): # connect to and setup an initial database with existing prompts
   conn = sqlite3.connect("journal.db")
   cursor = conn.cursor()
@@ -122,10 +124,10 @@ def getRandomPrompt():
 
   prompt_label.pack(pady=10)
 
-# incomplete/needs testing
+'''stack-overflow used for how to set up an os.path.join (how to find the path of the file on a laptop) '''
 def userGuide():
-  index_path = os.path.join(os.path.dirname(__file__), "index.html")
-  webbrowser.open(f"file://{os.path.abspath(index_path)}", new=2) # VERY IMPORTANT!! STILL NEEDS TO BE CHECKED IF IT WORKS ON ANOTHER LAPTOP!!
+  index_path = os.path.join(os.path.dirname(__file__), "index.html") #finds the path to the file on a PC/laptop
+  webbrowser.open(f"file://{os.path.abspath(index_path)}", new=2)
 
 
 # setup Tkinter starting window
@@ -144,7 +146,8 @@ label.image = photo  # Keep a reference in case
 label.pack(side="left", padx=10, pady=10)
 
 # Current date
-today = datetime.now().strftime('%d-%m-%Y')
+'''stack-overflow used for the use of method .strftime()'''
+today = datetime.now().strftime('%d-%m-%Y') #gets current date
 tk.Label(root, text=f"Today's Date: {today}", font=("Arial", 14)).pack(pady=10)
 
 # Buttons
